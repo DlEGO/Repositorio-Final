@@ -38,9 +38,9 @@ import java.awt.Insets;
 public class Cinema extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
-	private ArrayList<Pelicula> caratulasLabels = new ArrayList<Pelicula>();
+	private ArrayList<Pelicula> peliculas = new ArrayList<Pelicula>();
 	private ArrayList<JButton> peliculasButtons = new ArrayList<JButton>();
-	private ArrayList<JLabel> labels = new ArrayList<JLabel>();
+	private ArrayList<JLabel> caratulasLabels = new ArrayList<JLabel>();
 	private Sala[][] salas;
 	public int precio = 0;
 	public int salaX = 0, salaY = 0;
@@ -63,13 +63,9 @@ public class Cinema extends JDialog {
 	}
 
 	public Cinema(Pedido pedido) throws SQLException {
-			
-		caratulasLabels = Conexion.getSingleton().cargarPeliculas();
-		salas = new Sala[caratulasLabels.size()][3];
-		
-		crearSalas();
-		
 				
+		crearSalas();
+			
 		setResizable(false);
 		setModal(true);
 		setBounds(100, 100, 1049, 454);
@@ -203,8 +199,7 @@ public class Cinema extends JDialog {
 				}
 			}
 		}
-				//-----------------------------------------------------
-				
+		//-----------------------------------------------------		
 			
 		JButton borrarBtn = new JButton("Borrar Selecci\u00F3n");
 		borrarBtn.addActionListener(new ActionListener() {
@@ -374,19 +369,19 @@ public class Cinema extends JDialog {
 		//Añade los botones de las películas a un arraylist y los label de las caratulas a otro
 		for(i = 0; i < peliculasPanel.getComponentCount() ; i++) {
 			peliculasButtons.add((JButton) peliculasPanel.getComponent(i));
-			labels.add((JLabel) caratulasPanel.getComponent(i));
+			caratulasLabels.add((JLabel) caratulasPanel.getComponent(i));
 		}
 		
 		//Asigna la caratula al label que está a la izquierda de cada película según la película
-		for(i = 0; i < caratulasLabels.size() ; i++) {
-			peliculasButtons.get(i).setText(caratulasLabels.get(i).getNombre());
-			asignarCaratula(caratulasLabels.get(i).getCaratula(), i);
+		for(i = 0; i < peliculas.size() ; i++) {
+			peliculasButtons.get(i).setText(peliculas.get(i).getNombre());
+			asignarCaratula(peliculas.get(i).getCaratula(), i);
 			peliculasButtons.get(i).addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					JButton aux = (JButton) e.getSource();
-					for(int i = 0 ; i < caratulasLabels.size() ; i++) {
+					for(int i = 0 ; i < peliculas.size() ; i++) {
 						
-						if(aux.getText() == caratulasLabels.get(i).getNombre()) {
+						if(aux.getText() == peliculas.get(i).getNombre()) {
 							salaX = i+1;
 							horario1.setText("Horario 1 - Sala 1: " + salas[i][0].getHorario());
 							horario2.setText("Horario 2 - Sala 2: " + salas[i][1].getHorario());
@@ -399,9 +394,9 @@ public class Cinema extends JDialog {
 		}
 		
 		//mira la longitud de las peliculas y desactiva el resto de botones y labels para que no quede feito c:
-		for(i = caratulasLabels.size(); i < peliculasButtons.size() ; i++) {
+		for(i = peliculas.size(); i < peliculasButtons.size() ; i++) {
 			peliculasButtons.get(i).setVisible(false);
-			labels.get(i).setVisible(false);
+			caratulasLabels.get(i).setVisible(false);
 		}
 		//--------------------------------------------------------
 		
@@ -423,7 +418,7 @@ public class Cinema extends JDialog {
 		}
 		
 		
-		//Aún no se envía, toca arreglarlo XD
+		//Aún no se envía, toca arreglarlo XD, XD
 	
 		//obtiene el estado inmediatamente anterior a la última reserva, esto para usarse como auxiliar en caso de cancelar el proceso
 		try {
@@ -456,17 +451,22 @@ public class Cinema extends JDialog {
 	}
 	
 	//Recorre el arreglo de peliculas y para cada película crea 3 salas y le asigna un horario partiendo de las 12 del día
-	private void crearSalas() {
-		for(int i = 0; i < caratulasLabels.size() ; i++) {
+	private void crearSalas() throws SQLException {
+		//Carga las peliculas de la base de datos al arraylist
+		peliculas = Conexion.getSingleton().cargarPeliculas();
+		//Parar cada película, genera 3 salas, donde películas.size(), es la cantidad de peliculas
+		//y las salas las añade a una matriz, aquí solamente inicializa la matriz.
+				salas = new Sala[peliculas.size()][3];
+		for(int i = 0; i < peliculas.size() ; i++) {
 			int horario = 0;
 			for(int j = 0 ; j < 3 ; j++) {
 				
 				if(j == 0) {
 					horario = 1200;
 				}else {
-					horario += caratulasLabels.get(i).getDuracion() + 30;
+					horario += peliculas.get(i).getDuracion() + 30;
 				}
-				salas[i][j] = new Sala((j + 1) + (i*3), caratulasLabels.get(i).getNombre(), horario);
+				salas[i][j] = new Sala((j + 1) + (i*3), peliculas.get(i).getNombre(), horario);
 			}
 		}		
 	}
@@ -476,22 +476,12 @@ public class Cinema extends JDialog {
 		Image image;
 		try {
 			URL url = new URL(_url);
-			image = ImageIO.read(url).getScaledInstance(labels.get(labelIndex).getWidth(), labels.get(labelIndex).getHeight(), Image.SCALE_DEFAULT);
-			labels.get(labelIndex).setIcon(new ImageIcon(image));
+			image = ImageIO.read(url).getScaledInstance(caratulasLabels.get(labelIndex).getWidth(), caratulasLabels.get(labelIndex).getHeight(), Image.SCALE_DEFAULT);
+			caratulasLabels.get(labelIndex).setIcon(new ImageIcon(image));
 		}catch(MalformedURLException e) {
 		}catch(IOException ex) {			
 		}
 	}
-
-	//Mustra la disposición de las sillas
-	/*private void imprimirSillas() {
-		for(int i = 0; i < 5 ;i++) {
-			for(int j = 0 ; j < 10 ; j++) {
-				System.out.print(salas[salaX - 1][salaY - 1].getSillasReservadas()[i][j] + " ");
-			}	
-			System.out.println();
-		}
-	}*/
 	
 	//Carga la distribución de las sillas desde la base de datos para cada sala teniendo en cuenta el índice de la sala, dado por la película
 	private void cargarDistribucion(int index) throws SQLException {
@@ -527,14 +517,7 @@ public class Cinema extends JDialog {
 			}
 		}
 	}
-	
-	/*
-	private void cargarSalas(int index) {
-		for(int k = 0 ; k < 3 ; k++) {		
-			System.out.print(salas[index][k].getIdSala() + " ");			
-		}
-	}*/
-	
+		
 	//Cambia el color de la silla y la activa y desactiva según la elección
 	private void actualizarSillas() {
 		for(int i = 0; i < 5; i++) {
