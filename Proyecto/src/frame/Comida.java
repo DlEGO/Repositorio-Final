@@ -282,37 +282,7 @@ public class Comida extends JDialog {
 		JButton btnNewButton = new JButton("Continuar");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//En este arraylist van los productos comprados
-				ArrayList<String> productoComprado = new ArrayList<String>();
-				
-				//Envía los productos comprados y la cantidad por separado por medio de un arrayList
-				//Primero se escogen aquellos producto donde se ingresó una cantidad diferente de 0
-				for(int i = 0; i < productos.size() ; i++) {
-					if(!productos.get(i).getText().equals("")) {
-						String producto = productos.get(i).getName() + ": " + productos.get(i).getText();
-						productoComprado.add(producto);
-					}
-				}
-				
-				//después pone ceros donde hay espacios vacíos, para evitar un error en la suma
-				for(int i = 0; i < 9 ; i++){
-					if(productos.get(i).getText().equals("")) {
-						productos.get(i).setText("0");
-					}
-				}
-				
-				//Calcula el total
-				//Hace la sumatoria del producto de cada ítem por su precio
-				//*Se agregan los precios a un arreglo en el mismo orden en el que se hacen los JTextField para simplificar
-				for(int i = 0 ; i < 9 ; i++) {
-					total += Integer.parseInt(productos.get(i).getText()) * precios[i];
-				}
-				//Se setean los parámetros dentro del objeto pedido enviado desde Multiplex
-				pedido.setTotalSnacks(total);	
-				pedido.setSnacks(productoComprado);
-				//Y se abre la ventana de pago
-				Pago pago = new Pago(pedido);
-				pago.setVisible(true);
+				continuar(pedido);
 			}
 		});
 		btnNewButton.setBounds(366, 541, 89, 23);
@@ -326,6 +296,40 @@ public class Comida extends JDialog {
 		});
 		btnNewButton_1.setBounds(202, 541, 154, 23);
 		contentPanel.add(btnNewButton_1);
+	}
+	
+	void continuar(Pedido pedido) {
+		//En este arraylist van los productos comprados
+		ArrayList<String> productoComprado = new ArrayList<String>();
+		
+		//Envía los productos comprados y la cantidad por separado por medio de un arrayList
+		//Primero se escogen aquellos producto donde se ingresó una cantidad diferente de 0
+		for(int i = 0; i < productos.size() ; i++) {
+			if(!productos.get(i).getText().equals("")) {
+				String producto = productos.get(i).getName() + ": " + productos.get(i).getText();
+				productoComprado.add(producto);
+			}
+		}
+		
+		//después pone ceros donde hay espacios vacíos, para evitar un error en la suma
+		for(int i = 0; i < 9 ; i++){
+			if(productos.get(i).getText().equals("")) {
+				productos.get(i).setText("0");
+			}
+		}
+		
+		//Calcula el total
+		//Hace la sumatoria del producto de cada ítem por su precio
+		//*Se agregan los precios a un arreglo en el mismo orden en el que se hacen los JTextField para simplificar
+		for(int i = 0 ; i < 9 ; i++) {
+			total += Integer.parseInt(productos.get(i).getText()) * precios[i];
+		}
+		//Se setean los parámetros dentro del objeto pedido enviado desde Multiplex
+		pedido.setTotalSnacks(total);	
+		pedido.setSnacks(productoComprado);
+		//Y se abre la ventana de pago
+		Pago pago = new Pago(pedido);
+		pago.setVisible(true);
 	}
 	
 	//Setea el total a 0 para volver a ser calculado según los valores ingresados en los campos de texto

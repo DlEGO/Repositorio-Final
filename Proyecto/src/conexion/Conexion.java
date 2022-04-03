@@ -94,6 +94,13 @@ public class Conexion {
 		
 	}
 	
+	public void actualizarDatos(String ssql) throws SQLException {
+		
+		sql.executeUpdate(ssql);
+		
+		
+	}
+	
 	public boolean validarCredenciales(String ssql) {
 		int resultado = 0;
 		boolean access = false;

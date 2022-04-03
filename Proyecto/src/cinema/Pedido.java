@@ -11,11 +11,14 @@ public class Pedido {
 	private int sillasNormales = 0;
 	private int sillasVIP = 0;
 	private int sillasPref = 0;
+	private int sala;
 	private int totalSillas = 0;
 	private String ubicacionSillas;
-	private String estadoSillas;
+	private String estadoAnteriorSillas;
 	private ArrayList<String> snacks = new ArrayList<String>();
 	private int totalSnacks = 0;
+	private String estadoAnteriorSnacks;
+
 	
 	public Pedido(String nombre, String ID) {
 		this.nombre = nombre;
@@ -83,11 +86,27 @@ public class Pedido {
 	public void setTotalSillas(int totalSillas) {
 		this.totalSillas = totalSillas;
 	}
-	public String getEstadoSillas() {
-		return estadoSillas;
+	public String getEstadoAnteriorSillas() {
+		return estadoAnteriorSillas;
 	}
-	public void setEstadoSillas(String estadoSillas) {
-		this.estadoSillas = estadoSillas;
+	public void setEstadoAnteriorSillas(String estadoSillas) {
+		this.estadoAnteriorSillas = estadoSillas;
+	}
+
+	public String getEstadoAnteriorSnacks() {
+		return estadoAnteriorSnacks;
+	}
+
+	public void setEstadoAnteriorSnacks(String estadoAnteriorSnacks) {
+		this.estadoAnteriorSnacks = estadoAnteriorSnacks;
+	}
+
+	public int getSala() {
+		return sala;
+	}
+
+	public void setSala(int sala) {
+		this.sala = sala;
 	}
 	
 	

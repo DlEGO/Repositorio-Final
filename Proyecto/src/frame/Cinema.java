@@ -422,15 +422,25 @@ public class Cinema extends JDialog {
 			}						
 		}
 		
+		///----------
 		
-		//Aún no se envía, toca arreglarlo XD, XD
-	
-		String ssql = "UPDATE reservas set fila=('"+distribucion+"') WHERE idsala="+salas[salaX - 1][salaY - 1].getIdSala()+"";
+		//Primero se guarda la distribución actual, con las sillas reservadas en una sentencia para ejecutar el update en la BD
+		//Esto porque hay un plazo de tiempo para que se ejecute el pago, si no se hace el pago, la BD vuelve al estado anterior
+		//Entonces, se hace el update con el estado anterior guardado en el pedido. Si se cancela el pago, se vuelve a actualizar
+		//la BD, pero esta vez con el estado anterior para que las sillas queden disponibles nuevamente. Si el pago se realiza
+		//lo único que se hace es actualizar los ingresos del cinema en la BD.
+		
+		//obtiene las sillas reservadas de la BD y lo guarda en forma de "estado anterior"
 		String ssql1 = "SELECT * FROM reservas WHERE idsala="+salas[salaX - 1][salaY - 1].getIdSala()+"";
-		Conexion.getSingleton();
 		String estadoAnterior = Conexion.getSingleton().cargarDatos(ssql1, "fila");
-		pedido.setEstadoSillas(estadoAnterior);
+		
+		//Primero hace la consulta y luego el update por obvias razones
+		String ssql = "UPDATE reservas set fila=('"+distribucion+"') WHERE idsala="+salas[salaX - 1][salaY - 1].getIdSala()+"";
+		Conexion.getSingleton().actualizarDatos(ssql);
+		pedido.setEstadoAnteriorSillas(estadoAnterior);
+		pedido.setSala(salas[salaX - 1][salaY - 1].getIdSala());
 
+		///----------
 		//Setea los parámetros del pedido
 		pedido.setUbicacionSillas(ubicacion);
 		pedido.setPelicula(salas[salaX - 1][salaY - 1].getNombrePelicula());
