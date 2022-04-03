@@ -74,14 +74,14 @@ public class Conexion {
 		
 	}
 	
-	public String cargarDatos(String ssql) {
+	public String cargarDatos(String ssql, String nombreColumna) {
 		String resultado = "";
 		try {
 			rs = sql.executeQuery(ssql);
 			boolean r = rs.next();
 			int i = 0;
 			while (r) {
-				resultado = rs.getString("fila");
+				resultado = rs.getString(nombreColumna);
 			
 				r=rs.next();
 				i++;

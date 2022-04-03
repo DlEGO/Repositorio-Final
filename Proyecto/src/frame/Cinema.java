@@ -426,8 +426,9 @@ public class Cinema extends JDialog {
 		//Aún no se envía, toca arreglarlo XD, XD
 	
 		String ssql = "UPDATE reservas set fila=('"+distribucion+"') WHERE idsala="+salas[salaX - 1][salaY - 1].getIdSala()+"";
+		String ssql1 = "SELECT * FROM reservas WHERE idsala="+salas[salaX - 1][salaY - 1].getIdSala()+"";
 		Conexion.getSingleton();
-		String estadoAnterior = Conexion.getSingleton().cargarDatos("SELECT * FROM reservas WHERE idsala="+salas[salaX - 1][salaY - 1].getIdSala()+"");
+		String estadoAnterior = Conexion.getSingleton().cargarDatos(ssql1, "fila");
 		pedido.setEstadoSillas(estadoAnterior);
 
 		//Setea los parámetros del pedido
@@ -487,9 +488,9 @@ public class Cinema extends JDialog {
 		//obtiene la cadena con las sillas reservadas
 		String ssql = "SELECT * FROM reservas WHERE idsala="+index+"";
 		
-		System.out.println(Conexion.getSingleton().cargarDatos(ssql));
+		System.out.println(Conexion.getSingleton().cargarDatos(ssql, "fila"));
 		//Obtiene las sillas reservadas
-		String reserva = Conexion.getSingleton().cargarDatos(ssql);
+		String reserva = Conexion.getSingleton().cargarDatos(ssql, "fila");
 		//Separa la cadena y la convierte en array
 		char[] separar = new char[50];
 		separar = reserva.toCharArray();

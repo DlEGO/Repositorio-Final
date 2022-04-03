@@ -11,6 +11,8 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.GridBagLayout;
@@ -78,20 +80,22 @@ public class Comida extends JDialog {
 	 */
 	public Comida(Pedido pedido)throws SQLException {
 		//Obtiene la cantidad de cada ítem desde la base de datos y lo añade a un array
-		try {
-			for(int i = 0; i < cantidadItemsInventario.length ; i++) {
-				String ssql = "SELECT * FROM inventariocomida WHERE idproducto="+ i +"";
-				cantidadItemsInventario[i] = Integer.parseInt(Conexion.getSingleton().cargarDatos(ssql));
-			}					
-
-		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	
-		catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}	
+		for(int i = 0; i < cantidadItemsInventario.length ; i++) {		
+			try {	
+				//el i + 1 es porque los índices en la bd empiezan desde 1
+				String ssql = "SELECT * FROM inventariocomida WHERE idproducto="+ (i + 1) +"";
+				cantidadItemsInventario[i] = Integer.parseInt(Conexion.getSingleton().cargarDatos(ssql, "cantidad"));
+				System.out.println(cantidadItemsInventario[i]);
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}	
+			catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}	
+		}
+		
 		
 		//Cada JTextField es añadido a un arraylist para simplificar codigo adelante
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
