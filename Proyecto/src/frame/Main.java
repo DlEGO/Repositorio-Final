@@ -67,24 +67,7 @@ public class Main extends JFrame {
 		JButton btnUsuario = new JButton("Entrar");
 		btnUsuario.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					if(!nombreField.getText().isBlank() && !idField.getText().isBlank()) {
-						String ssql1 = "INSERT INTO usuarios (nombre, identificacion) VALUES ('"+ nombreField.getText() +"', '"+ idField.getText() +"')";
-						String ssql = "SELECT * FROM usuarios WHERE identificacion='"+ idField.getText() +"'";
-						try {
-							if(!Conexion.getSingleton().validarCredenciales(ssql)) {
-								Conexion.getSingleton().sql.execute(ssql1);
-								
-							}
-							Pedido pedido = new Pedido(nombreField.getText(), idField.getText());
-							Cinema cinema = new Cinema(pedido);
-							cinema.setVisible(true);
-						} catch (SQLException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-					}else {
-						JOptionPane.showMessageDialog(null, "No puede haber algún campo vacío.");
-					}
+					entrar();
 					
 				}
 			
@@ -134,5 +117,30 @@ public class Main extends JFrame {
 		lblNewLabel_1.setBounds(70, 66, 89, 14);
 		mainPanel.add(lblNewLabel_1);
 
+	}
+	
+	private void entrar() {
+		//Primero verifica que los campos de texto no estén vacíos
+		if(!nombreField.getText().isBlank() && !idField.getText().isBlank()) {
+			//Crea las sentencias a ejecutar en la base de datos
+			String ssql1 = "INSERT INTO usuarios (nombre, identificacion) VALUES ('"+ nombreField.getText() +"', '"+ idField.getText() +"')";
+			String ssql = "SELECT * FROM usuarios WHERE identificacion='"+ idField.getText() +"'";
+			try {
+				//Primero verifica solamente que no exista un registro con ese documento de identidad (No consulta por nombre)
+				if(!Conexion.getSingleton().validarCredenciales(ssql)) {
+					//Si no existe el registro, lo añade a la base de datos
+					Conexion.getSingleton().sql.execute(ssql1);
+				}
+				//Si ya existe, simplemente crea un pedido e inica el frame para escoger la película
+				Pedido pedido = new Pedido(nombreField.getText(), idField.getText());
+				Cinema cinema = new Cinema(pedido);
+				cinema.setVisible(true);
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}else {
+			JOptionPane.showMessageDialog(null, "No puede haber algún campo vacío.");
+		}
 	}
 }

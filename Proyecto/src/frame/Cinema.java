@@ -44,8 +44,9 @@ public class Cinema extends JDialog {
 	private Sala[][] salas;
 	public int precio = 0;
 	public int salaX = 0, salaY = 0;
+	//Matriz sillas es la matriz de botones asignado en la misma posición como se ven en la app
 	private JButton sillas[][] = new JButton[5][10];
-	private String[][] ubicacionSillas = {{"A0","A1","A2","A3","A4","A5","A6","A7","A8","A9"}
+	private String[][] nombrePosicionSilla = {{"A0","A1","A2","A3","A4","A5","A6","A7","A8","A9"}
 										 ,{"B0","B1","B2","B3","B4","B5","B6","B7","B8","B9"}
 										 ,{"C0","C1","C2","C3","C4","C5","C5","C6","C8","C9"}
 										 ,{"D0","D1","D2","D3","D4","D5","D6","D7","D8","D9"}
@@ -145,6 +146,65 @@ public class Cinema extends JDialog {
 		sillasPanel.setBounds(433, 64, 565, 237);
 		contentPanel.add(sillasPanel);
 		sillasPanel.setLayout(new GridLayout(5, 10, 5, 15));
+		
+		//-----------------------------------------------------
+		//Instancia los botones, los añade a un arreglo de botones y según el botón al que se le de clic
+		//ambia el estado en las sillas disponibles de la sala seleccionada, aumenta el precio según el tipo de silla
+		//Y lo cambia de color para tener feedback de que se está escogiendo esa silla y lo deshabilita para que no se le
+		//de clic más veces
+		for(int i = 0; i < 5 ;i++) {
+			for(int j = 0 ; j < 10 ; j++) {
+				JButton button = new JButton();
+				button.setBackground(Color.GREEN);
+				button.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						button.setBackground(Color.ORANGE);
+							
+						JButton aux = (JButton) e.getSource();
+						for(int i = 0; i < 5 ;i++) {
+							for(int j = 0 ; j < 10 ; j++) {
+								if(aux == sillas[i][j]) {
+										
+									if(salas[salaX - 1][salaY - 1].getDisposicionSillas()[i][j] == 2) {												salas[salaX - 1][salaY - 1].setSillasReservadas(i, j, 6);
+											precio += 5000;
+											pedido.setSillasVIP(pedido.getSillasVIP() + 1);
+									}else if(salas[salaX - 1][salaY - 1].getDisposicionSillas()[i][j] == 3) {
+												salas[salaX - 1][salaY - 1].setSillasReservadas(i, j, 7);
+												precio += 2000;
+												pedido.setSillasNormales(pedido.getSillasNormales() + 1);
+
+									}else if(salas[salaX - 1][salaY - 1].getDisposicionSillas()[i][j] == 4) {
+												salas[salaX - 1][salaY - 1].setSillasReservadas(i, j, 8);
+												precio += 1000;
+												pedido.setSillasPref(pedido.getSillasPref() + 1);
+
+									}
+											sillas[i][j].setEnabled(false);
+											pedido.setTotalSillas(precio);
+								}
+							}
+									
+						}
+								//imprimirSillas();
+								
+					}
+				});
+				
+				//Añade el boton a la matriz después de instanciarlo
+				sillas[i][j] = button;
+				//Los añade todos a un panel para que se vean en cuadrícula bien melo
+				sillasPanel.add(button);
+				
+				if(salaX != 0 && salaY != 0) {
+					if(salas[salaX - 1][salaY - 1].getSillasReservadas()[i][j] == 5) {
+						sillas[i][j].setEnabled(false);
+						sillas[i][j].setBackground(Color.red);
+					}
+				}
+			}
+		}
+				//-----------------------------------------------------
+				
 			
 		JButton borrarBtn = new JButton("Borrar Selecci\u00F3n");
 		borrarBtn.addActionListener(new ActionListener() {
@@ -188,61 +248,6 @@ public class Cinema extends JDialog {
 		contentPanel.add(continuarBtn);
 		//---------------------------------------------------------------------
 		
-		//-----------------------------------------------------
-		//Instancia los botones, los añade a un arreglo de botones y según el botón al que se le de clic
-		//Cambia el estado en las sillas disponibles de la sala seleccionada, aumenta el precio según el tipo de silla
-		//Y lo cambia de color para tener feedback de que se está escogiendo esa silla y lo deshabilita para que no se le
-		//de clic más veces
-		for(int i = 0; i < 5 ;i++) {
-			for(int j = 0 ; j < 10 ; j++) {
-				JButton button = new JButton();
-				button.setBackground(Color.GREEN);
-				button.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						button.setBackground(Color.ORANGE);
-						
-						JButton aux = (JButton) e.getSource();
-						for(int i = 0; i < 5 ;i++) {
-							for(int j = 0 ; j < 10 ; j++) {
-								if(aux == sillas[i][j]) {
-									
-									if(salas[salaX - 1][salaY - 1].getDisposicionSillas()[i][j] == 2) {
-										salas[salaX - 1][salaY - 1].setSillasReservadas(i, j, 6);
-										precio += 5000;
-										pedido.setSillasVIP(pedido.getSillasVIP() + 1);
-									}else if(salas[salaX - 1][salaY - 1].getDisposicionSillas()[i][j] == 3) {
-										salas[salaX - 1][salaY - 1].setSillasReservadas(i, j, 7);
-										precio += 2000;
-										pedido.setSillasNormales(pedido.getSillasNormales() + 1);
-
-									}else if(salas[salaX - 1][salaY - 1].getDisposicionSillas()[i][j] == 4) {
-										salas[salaX - 1][salaY - 1].setSillasReservadas(i, j, 8);
-										precio += 1000;
-										pedido.setSillasPref(pedido.getSillasPref() + 1);
-
-									}
-									sillas[i][j].setEnabled(false);
-									pedido.setTotalSillas(precio);
-								}
-							}
-							
-						}
-						//imprimirSillas();
-						
-					}
-				});
-				sillas[i][j] = button;
-				sillasPanel.add(button);
-				if(salaX != 0 && salaY != 0) {
-					if(salas[salaX - 1][salaY - 1].getSillasReservadas()[i][j] == 5) {
-						sillas[i][j].setEnabled(false);
-						sillas[i][j].setBackground(Color.red);
-					}
-				}
-			}
-		
-		}
-		//-----------------------------------------------------
 		
 		
 		JButton horario1 = new JButton("Sala");
@@ -410,7 +415,7 @@ public class Cinema extends JDialog {
 			for(int j = 0; j < 10 ; j++) {
 				if(salas[salaX - 1][salaY - 1].getSillasReservadas()[i][j] != 5 && salas[salaX - 1][salaY - 1].getSillasReservadas()[i][j] != 1) {
 					salas[salaX - 1][salaY - 1].setSillasReservadas(i, j, 5);
-					ubicacion = ubicacion + ubicacionSillas[i][j] + " ";
+					ubicacion = ubicacion + nombrePosicionSilla[i][j] + " ";
 
 				}
 				distribucion = distribucion + String.valueOf(salas[salaX - 1][salaY - 1].getSillasReservadas()[i][j]);

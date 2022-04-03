@@ -21,6 +21,8 @@ public class Pedido {
 		this.nombre = nombre;
 		this.ID = ID;
 	}
+	
+	//getters & setters
 	public String getPelicula() {
 		return pelicula;
 	}

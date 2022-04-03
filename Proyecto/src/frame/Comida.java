@@ -52,12 +52,11 @@ public class Comida extends JDialog {
 	
 	private int[] cantidadItemsInventario = new int[9];
 	private int[] precios = {7500,3100,3000,1500,3000,5000,3000,2000,3500};
+	private int total = 0;
 	
 	ArrayList<JTextField> productos = new ArrayList<JTextField>();
 	
 	
-	String sillasReservadas;
-
 	/**
 	 * Launch the application.
 	 */
@@ -78,11 +77,11 @@ public class Comida extends JDialog {
 	 * @throws IOException 
 	 */
 	public Comida(Pedido pedido)throws SQLException {
+		//Obtiene la cantidad de cada ítem desde la base de datos y lo añade a un array
 		try {
 			for(int i = 0; i < cantidadItemsInventario.length ; i++) {
 				String ssql = "SELECT * FROM inventariocomida WHERE idproducto="+ i +"";
 				cantidadItemsInventario[i] = Integer.parseInt(Conexion.getSingleton().cargarDatos(ssql));
-				
 			}					
 
 		} catch (NumberFormatException e) {
@@ -93,13 +92,8 @@ public class Comida extends JDialog {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}	
-		for(int i = 0; i < cantidadItemsInventario.length ; i++) {
-			
-			System.out.println(cantidadItemsInventario[i]);
-			
-		}	
 		
-		
+		//Cada JTextField es añadido a un arraylist para simplificar codigo adelante
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setResizable(false);
 		setModal(true);
@@ -180,6 +174,7 @@ public class Comida extends JDialog {
 		CocaCola.setName("Coca-Cola");
 		productos.add(CocaCola);
 		
+		//-----------------------------------------
 		JLabel lDetodito = new JLabel("7500");
 		lDetodito.setHorizontalAlignment(SwingConstants.CENTER);
 		lDetodito.setBounds(343, 11, 80, 28);
@@ -278,14 +273,16 @@ public class Comida extends JDialog {
 		colombiana.setHorizontalAlignment(SwingConstants.CENTER);
 		colombiana.setIcon(new ImageIcon(Comida.class.getResource("/images/cpc.png")));
 		panel.add(colombiana);
-		
+		//----------------------------------------------------------
 		
 		JButton btnNewButton = new JButton("Continuar");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//En este arraylist van los productos comprados
 				ArrayList<String> productoComprado = new ArrayList<String>();
 				
 				//Envía los productos comprados y la cantidad por separado por medio de un arrayList
+				//Primero se escogen aquellos producto donde se ingresó una cantidad diferente de 0
 				for(int i = 0; i < productos.size() ; i++) {
 					if(!productos.get(i).getText().equals("")) {
 						String producto = productos.get(i).getName() + ": " + productos.get(i).getText();
@@ -293,21 +290,24 @@ public class Comida extends JDialog {
 					}
 				}
 				
-				//después pone ceros donde hay espacios vacíos
+				//después pone ceros donde hay espacios vacíos, para evitar un error en la suma
 				for(int i = 0; i < 9 ; i++){
 					if(productos.get(i).getText().equals("")) {
 						productos.get(i).setText("0");
 					}
 				}
 				
-				int total = 0;
 				//Calcula el total
+				//Hace la sumatoria del producto de cada ítem por su precio
+				//*Se agregan los precios a un arreglo en el mismo orden en el que se hacen los JTextField para simplificar
 				for(int i = 0 ; i < 9 ; i++) {
 					total += Integer.parseInt(productos.get(i).getText()) * precios[i];
 				}
+				//Se setean los parámetros dentro del objeto pedido enviado desde Multiplex
 				pedido.setTotalSnacks(total);	
 				pedido.setSnacks(productoComprado);
-				Pago pago = new Pago(sillasReservadas, 1, pedido);
+				//Y se abre la ventana de pago
+				Pago pago = new Pago(pedido);
 				pago.setVisible(true);
 			}
 		});
@@ -318,13 +318,17 @@ public class Comida extends JDialog {
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				borrarSeleccion();
-				
 			}
 		});
 		btnNewButton_1.setBounds(202, 541, 154, 23);
 		contentPanel.add(btnNewButton_1);
 	}
 	
+	//Setea el total a 0 para volver a ser calculado según los valores ingresados en los campos de texto
 	void borrarSeleccion() {
+		total = 0;
+		for(int i = 0; i < productos.size() ; i++) {
+			productos.get(i).setText("");
+		}
 	}
 }

@@ -23,7 +23,7 @@ public class Pago extends JDialog {
 	 */
 	public static void main(String[] args) {
 		try {
-			dialog = new Pago("", 0, null);
+			dialog = new Pago(null);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -34,7 +34,7 @@ public class Pago extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public Pago(String sillas, int snacks, Pedido pedido) {
+	public Pago(Pedido pedido) {
 		setResizable(false);
 		setModal(true);
 		setAutoRequestFocus(false);
@@ -45,11 +45,11 @@ public class Pago extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		
-		JLabel lblNewLabel_1 = new JLabel(sillas);
+		JLabel lblNewLabel_1 = new JLabel("");
 		lblNewLabel_1.setBounds(173, 10, 79, 14);
 		contentPanel.add(lblNewLabel_1);
 		
-		JLabel lblNewLabel = new JLabel(String.valueOf(snacks));
+		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setBounds(173, 45, 79, 14);
 		contentPanel.add(lblNewLabel);
 		
