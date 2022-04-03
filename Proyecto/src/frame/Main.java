@@ -94,7 +94,7 @@ public class Main extends JFrame {
 				}
 			}
 		});
-		btnAdmin.setBounds(31, 174, 170, 23);
+		btnAdmin.setBounds(10, 165, 209, 23);
 		mainPanel.add(btnAdmin);
 		
 		idField = new JTextField();

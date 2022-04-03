@@ -10,5 +10,5 @@ public class Empleado {
 	private String fechaInicioContrato; //dd-mm-aaaa
 	private int idMultiplexTrabaja;
 	
-	
+	//Esta clase no se usa y no le he econtrado uso XD
 }

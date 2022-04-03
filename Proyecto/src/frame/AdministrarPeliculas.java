@@ -75,6 +75,10 @@ public class AdministrarPeliculas extends JDialog {
 		lblNewLabel_4.setBounds(45, 129, 46, 14);
 		contentPanel.add(lblNewLabel_4);
 		
+		JLabel urllbl = new JLabel("Imagen URL");
+		urllbl.setBounds(20, 154, 71, 14);
+		contentPanel.add(urllbl);
+		
 		idiomaPeli = new JTextField();
 		idiomaPeli.setBounds(111, 126, 86, 20);
 		contentPanel.add(idiomaPeli);
@@ -108,15 +112,24 @@ public class AdministrarPeliculas extends JDialog {
 		JButton agregarBtn = new JButton("Agregar");
 		agregarBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				int duracion = 0;
+				int ano = 0;
+				//Datos de la película
 				String nombre = nombrePeli.getText();
-				int duracion = Integer.parseInt(duracionPeli.getText());
-				int ano = Integer.parseInt(anoPeli.getText());
+				try {
+					duracion = Integer.parseInt(duracionPeli.getText());
+					ano = Integer.parseInt(anoPeli.getText());
+				}catch(NumberFormatException e1) {
+					JOptionPane.showMessageDialog(null, "Error, Introduce un valor número en el campo duración y año");
+				}
 				String genero =  generoPeli.getText();
 				String idioma = idiomaPeli.getText();
 				String url = urlField.getText();
 				
+				//Crea la sentencia
 				String ssql = "INSERT INTO peliculas (nombre, duracion, ano, genero, idioma, url) VALUES ('"+nombre+"',"+duracion+","+ano+",'"+genero+"','"+idioma+"', '"+url+"')";
 				
+				//Ejecuta la sentencia y añade la película
 				try {
 					Conexion.getSingleton().sql.execute(ssql);
 					JOptionPane.showMessageDialog(null, "Película agregada correctamente.");
@@ -131,12 +144,16 @@ public class AdministrarPeliculas extends JDialog {
 		JButton eliminarBtn = new JButton("Eliminar");
 		eliminarBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//Obtiene el nombre de la película (Respetando mayusculas)
 				String nombre = JOptionPane.showInputDialog("Ingresa el nombre de la película a eliminar: ");
+				
+				//crea dos sentencia
 				String ssql = "DELETE FROM peliculas WHERE nombre='"+nombre+"'";
 				String ssql1 = "SELECT * FROM peliculas WHERE nombre='"+nombre+"'";
 				try {
-					//Primero comprueba que si existe
+					//Primero comprueba que si existe la película entes de borrarla
 					if(!Conexion.getSingleton().validarCredenciales(ssql1)) {
+						//Si no existe una película con ese nombre, arroja error
 						JOptionPane.showMessageDialog(null, "No se encontró una película con ese nombre, por tanto, no se borró ningún resgitro");
 					}else {
 						//Si existe la pelicula, la borra
@@ -158,9 +175,5 @@ public class AdministrarPeliculas extends JDialog {
 		eliminarBtn.setBounds(71, 225, 101, 23);
 		contentPanel.add(eliminarBtn);
 		
-		
-		JLabel urllbl = new JLabel("Imagen URL");
-		urllbl.setBounds(20, 154, 71, 14);
-		contentPanel.add(urllbl);
 	}
 }

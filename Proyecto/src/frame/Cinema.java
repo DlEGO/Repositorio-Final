@@ -204,6 +204,7 @@ public class Cinema extends JDialog {
 		JButton borrarBtn = new JButton("Borrar Selecci\u00F3n");
 		borrarBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//Crea un estado provisional de las sillas reservadas para poder revertir el cambio y poder hacer una nueva selección
 				//Los botones que se pusieron en estado provisional vuelven a ser disponibles para hacer una nueva selección de sillas
 				for(int i = 0; i < 5 ;i++) {
 					for(int j = 0 ; j < 10 ; j++) {
@@ -211,6 +212,7 @@ public class Cinema extends JDialog {
 						//el estado provisional es de 6, para sillas VIP, 7 para normales y 8 para preferenciales
 						if(salas[salaX - 1][salaY - 1].getSillasReservadas()[i][j] == 6 || salas[salaX - 1][salaY - 1].getSillasReservadas()[i][j] == 7 || salas[salaX - 1][salaY - 1].getSillasReservadas()[i][j] == 8) {
 							salas[salaX - 1][salaY - 1].setSillasReservadas(i, j, 1);
+							//Activa los botones y lo vuelve verdes para er que están disponibles esas sillas nuevamente
 							sillas[i][j].setEnabled(true);
 							sillas[i][j].setBackground(Color.GREEN);
 							pedido.setSillasNormales(0);
@@ -220,7 +222,6 @@ public class Cinema extends JDialog {
 					}
 					
 				}
-				//imprimirSillas();
 			}
 		});
 		borrarBtn.setBounds(784, 364, 122, 23);
@@ -236,7 +237,12 @@ public class Cinema extends JDialog {
 			//Crea un string distribucion donde coge el array de sillas reservadas de cierta sala y los concatena para tenerlo en cadena de texto
 			//Y luego hacer el update en la base de datos
 			public void actionPerformed(ActionEvent e) {
-				continuar(pedido);
+				try {
+					continuar(pedido);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		continuarBtn.setBounds(909, 364, 89, 23);
@@ -386,7 +392,6 @@ public class Cinema extends JDialog {
 							horario1.setText("Horario 1 - Sala 1: " + salas[i][0].getHorario());
 							horario2.setText("Horario 2 - Sala 2: " + salas[i][1].getHorario());
 							horario3.setText("Horario 3 - Sala 3: " + salas[i][2].getHorario());
-							//cargarSalas(i);
 						}
 					}
 				}
@@ -402,7 +407,7 @@ public class Cinema extends JDialog {
 		
 	}
 	
-	private void continuar(Pedido pedido) {
+	private void continuar(Pedido pedido) throws SQLException {
 		String distribucion = "";
 		String ubicacion = "";
 		
@@ -420,16 +425,10 @@ public class Cinema extends JDialog {
 		
 		//Aún no se envía, toca arreglarlo XD, XD
 	
-		//obtiene el estado inmediatamente anterior a la última reserva, esto para usarse como auxiliar en caso de cancelar el proceso
-		try {
-			String ssql = "UPDATE reservas set fila=('"+distribucion+"') WHERE idsala="+salas[salaX - 1][salaY - 1].getIdSala()+"";
-			Conexion.getSingleton();
-			String estadoAnterior = Conexion.getSingleton().cargarDatos("SELECT * FROM reservas WHERE idsala="+salas[salaX - 1][salaY - 1].getIdSala()+"");
-			pedido.setEstadoSillas(estadoAnterior);
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		String ssql = "UPDATE reservas set fila=('"+distribucion+"') WHERE idsala="+salas[salaX - 1][salaY - 1].getIdSala()+"";
+		Conexion.getSingleton();
+		String estadoAnterior = Conexion.getSingleton().cargarDatos("SELECT * FROM reservas WHERE idsala="+salas[salaX - 1][salaY - 1].getIdSala()+"");
+		pedido.setEstadoSillas(estadoAnterior);
 
 		//Setea los parámetros del pedido
 		pedido.setUbicacionSillas(ubicacion);
