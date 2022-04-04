@@ -41,7 +41,7 @@ import javax.swing.UIManager;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class Comida extends JDialog {
+public class Snacks extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private JTextField DeTodito;
@@ -66,7 +66,7 @@ public class Comida extends JDialog {
 	 */
 	public static void main(String[] args) {
 		try {
-			Comida dialog = new Comida(null);
+			Snacks dialog = new Snacks(null);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -80,7 +80,7 @@ public class Comida extends JDialog {
 	 * @throws NumberFormatException 
 	 * @throws IOException 
 	 */
-	public Comida(Pedido pedido)throws SQLException {
+	public Snacks(Pedido pedido)throws SQLException {
 		//Obtiene la cantidad de cada ítem desde la base de datos y lo añade a un array
 		for(int i = 0; i < cantidadItemsInventario.length ; i++) {		
 			try {	
@@ -244,47 +244,47 @@ public class Comida extends JDialog {
 		
 		JLabel papasNatural = new JLabel("");
 		papasNatural.setHorizontalAlignment(SwingConstants.CENTER);
-		papasNatural.setIcon(new ImageIcon(Comida.class.getResource("/images/pmp.png")));
+		papasNatural.setIcon(new ImageIcon(Snacks.class.getResource("/images/pmp.png")));
 		productosPanel.add(papasNatural);
 		
 		JLabel papasPollo = new JLabel("");
 		papasPollo.setHorizontalAlignment(SwingConstants.CENTER);
-		papasPollo.setIcon(new ImageIcon(Comida.class.getResource("/images/pmn.png")));
+		papasPollo.setIcon(new ImageIcon(Snacks.class.getResource("/images/pmn.png")));
 		productosPanel.add(papasPollo);
 		
 		JLabel detoditoFamiliar = new JLabel("");
 		detoditoFamiliar.setHorizontalAlignment(SwingConstants.CENTER);
-		detoditoFamiliar.setIcon(new ImageIcon(Comida.class.getResource("/images/dtf.png")));
+		detoditoFamiliar.setIcon(new ImageIcon(Snacks.class.getResource("/images/dtf.png")));
 		productosPanel.add(detoditoFamiliar);
 		
 		JLabel doritos = new JLabel("");
 		doritos.setHorizontalAlignment(SwingConstants.CENTER);
-		doritos.setIcon(new ImageIcon(Comida.class.getResource("/images/dad.png")));
+		doritos.setIcon(new ImageIcon(Snacks.class.getResource("/images/dad.png")));
 		productosPanel.add(doritos);
 		
 		JLabel chocolateG = new JLabel("");
 		chocolateG.setHorizontalAlignment(SwingConstants.CENTER);
-		chocolateG.setIcon(new ImageIcon(Comida.class.getResource("/images/cjj.png")));
+		chocolateG.setIcon(new ImageIcon(Snacks.class.getResource("/images/cjj.png")));
 		productosPanel.add(chocolateG);
 		
 		JLabel chocolateP = new JLabel("");
 		chocolateP.setHorizontalAlignment(SwingConstants.CENTER);
-		chocolateP.setIcon(new ImageIcon(Comida.class.getResource("/images/cjp.png")));
+		chocolateP.setIcon(new ImageIcon(Snacks.class.getResource("/images/cjp.png")));
 		productosPanel.add(chocolateP);
 		
 		JLabel galletasChokis = new JLabel("");
 		galletasChokis.setHorizontalAlignment(SwingConstants.CENTER);
-		galletasChokis.setIcon(new ImageIcon(Comida.class.getResource("/images/gcn.png")));
+		galletasChokis.setIcon(new ImageIcon(Snacks.class.getResource("/images/gcn.png")));
 		productosPanel.add(galletasChokis);
 		
 		JLabel cocacola = new JLabel("");
 		cocacola.setHorizontalAlignment(SwingConstants.CENTER);
-		cocacola.setIcon(new ImageIcon(Comida.class.getResource("/images/ccp.png")));
+		cocacola.setIcon(new ImageIcon(Snacks.class.getResource("/images/ccp.png")));
 		productosPanel.add(cocacola);
 		
 		JLabel colombiana = new JLabel("");
 		colombiana.setHorizontalAlignment(SwingConstants.CENTER);
-		colombiana.setIcon(new ImageIcon(Comida.class.getResource("/images/cpc.png")));
+		colombiana.setIcon(new ImageIcon(Snacks.class.getResource("/images/cpc.png")));
 		productosPanel.add(colombiana);
 		//----------------------------------------------------------
 		
@@ -323,6 +323,7 @@ public class Comida extends JDialog {
 	
 	void continuar(Pedido pedido) {
 		boolean cantidadSuficiente = true;
+		//Lo setea en el pedido antes de ser actualizado
 		pedido.setEstadoAnteriorSnacks(cantidadItemsInventario);
 		//En este arraylist van los productos comprados
 		ArrayList<String> productoComprado = new ArrayList<String>();
@@ -332,12 +333,18 @@ public class Comida extends JDialog {
 		for(int i = 0; i < productos.size() ; i++) {
 
 			if(!productos.get(i).getText().equals("")) {
-				//System.out.println(Integer.parseInt(productos.get(i).getText()) + "., "+ cantidadItemsInventario[i]);
+				//Se actualiza la cantidad de prodcutos de cada uno
 				if(Integer.parseInt(productos.get(i).getText()) > cantidadItemsInventario[i]) {
 					JOptionPane.showMessageDialog(this, "Error. No hay sufiente cantidad de " + productos.get(i).getName());
 					cantidadSuficiente = false;
 				}else {
 					cantidadItemsInventario[i] -= Integer.parseInt(productos.get(i).getText());
+					try {
+						String ssql = "UPDATE inventariocomida set cantidad=('" + cantidadItemsInventario[i] + "') WHERE idproducto="+ (i + 1) + "";
+						Conexion.getSingleton().actualizarDatos(ssql);
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
 					String producto = productos.get(i).getName() + ": " + productos.get(i).getText();
 					productoComprado.add(producto);
 				}

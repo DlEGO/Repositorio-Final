@@ -447,9 +447,9 @@ public class Multiplex extends JDialog {
 		pedido.setHoraPelicula(salas[salaX - 1][salaY - 1].getHorario());
 		
 		//Y lo envía al siguiente paso, que es escoger la comida
-		Comida comida = null;		
+		Snacks comida = null;		
 		try {
-			comida = new Comida(pedido);
+			comida = new Snacks(pedido);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
