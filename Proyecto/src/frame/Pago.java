@@ -141,7 +141,15 @@ public class Pago extends JDialog {
 		JButton pagarButton = new JButton("Pagar");
 		pagarButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//Pagar XD
+				//Se simula el pago y se añade a la base de datos un registro de las compras del día para hacer el reporte
+				//Además actualiza el inventario de snacks en la BD
+				String ssql = "INSERT INTO pedidos (idCliente, nombrePelicula, valorBoletas) VALUES ('"+ pedido.getID() +"', '"+ pedido.getPelicula() +"', '"+ pedido.getTotalSillas() +"')";
+				try {
+					Conexion.getSingleton().actualizarDatos(ssql);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		pagarButton.setActionCommand("OK");

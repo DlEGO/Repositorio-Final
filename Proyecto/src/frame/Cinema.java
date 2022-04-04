@@ -160,23 +160,23 @@ public class Cinema extends JDialog {
 						for(int i = 0; i < 5 ;i++) {
 							for(int j = 0 ; j < 10 ; j++) {
 								if(aux == sillas[i][j]) {
-										
-									if(salas[salaX - 1][salaY - 1].getDisposicionSillas()[i][j] == 2) {												salas[salaX - 1][salaY - 1].setSillasReservadas(i, j, 6);
-											precio += 5000;
-											pedido.setSillasVIP(pedido.getSillasVIP() + 1);
+									//Compara la matriz de distribución donde dice cuales sillas son de qué tipo y va sumando el precio
+									if(salas[salaX - 1][salaY - 1].getDisposicionSillas()[i][j] == 2) {												
+										salas[salaX - 1][salaY - 1].setSillasReservadas(i, j, 6);
+										precio += 15000;
+										pedido.setSillasVIP(pedido.getSillasVIP() + 1);
 									}else if(salas[salaX - 1][salaY - 1].getDisposicionSillas()[i][j] == 3) {
-												salas[salaX - 1][salaY - 1].setSillasReservadas(i, j, 7);
-												precio += 2000;
-												pedido.setSillasNormales(pedido.getSillasNormales() + 1);
+										salas[salaX - 1][salaY - 1].setSillasReservadas(i, j, 7);
+										precio += 10000;
+										pedido.setSillasNormales(pedido.getSillasNormales() + 1);
 
 									}else if(salas[salaX - 1][salaY - 1].getDisposicionSillas()[i][j] == 4) {
-												salas[salaX - 1][salaY - 1].setSillasReservadas(i, j, 8);
-												precio += 1000;
-												pedido.setSillasPref(pedido.getSillasPref() + 1);
-
+										salas[salaX - 1][salaY - 1].setSillasReservadas(i, j, 8);
+										precio += 6000;
+										pedido.setSillasPref(pedido.getSillasPref() + 1);
 									}
-											sillas[i][j].setEnabled(false);
-											pedido.setTotalSillas(precio);
+									sillas[i][j].setEnabled(false);
+									pedido.setTotalSillas(precio);
 								}
 							}
 									
