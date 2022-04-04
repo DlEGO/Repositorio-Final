@@ -42,6 +42,8 @@ public class Multiplex extends JDialog {
 	private ArrayList<JButton> peliculasButtons = new ArrayList<JButton>();
 	private ArrayList<JLabel> caratulasLabels = new ArrayList<JLabel>();
 	private Sala[][] salas;
+	//Este aux es para usar en la sentencia a ejecutar dentro de la base de datos que requiere la tabla de reservas
+	private String multiplexAux;
 	public int precio = 0;
 	public int salaX = 0, salaY = 0;
 	//Matriz sillas es la matriz de botones, donde se asignan en la misma posición según como se ve en la distribución al ejecutar
@@ -64,7 +66,29 @@ public class Multiplex extends JDialog {
 	}
 
 	public Multiplex(Pedido pedido) throws SQLException {
-				
+		//Teniendo en cuenta el multiplex escogido en el primer frame, se crearán todsa las salas con los registros del multiplex 
+		//seleccionado
+		multiplexAux = pedido.getMultiplex();
+		switch(multiplexAux) {
+		case "Titan":
+			multiplexAux = "titan";
+			break;
+		case "Plaza Central":
+			multiplexAux = "plazacentral";
+			break;
+		case "Unicentro":
+			multiplexAux = "unicentro";
+			break;
+		case "Embajador":
+			multiplexAux = "embajador";
+			break;
+		case "Gran Estacion":
+			multiplexAux = "granestacion";
+			break;
+		case "Americas":
+			multiplexAux = "americas";
+			break;
+		}
 		crearSalas();
 			
 		setResizable(false);
@@ -431,11 +455,11 @@ public class Multiplex extends JDialog {
 		//lo único que se hace es actualizar los ingresos del cinema en la BD.
 		
 		//obtiene las sillas reservadas de la BD y lo guarda en forma de "estado anterior"
-		String ssql1 = "SELECT * FROM reservas WHERE idsala="+salas[salaX - 1][salaY - 1].getIdSala()+"";
+		String ssql1 = "SELECT * FROM reservas"+multiplexAux+" WHERE idsala="+salas[salaX - 1][salaY - 1].getIdSala()+"";
 		String estadoAnterior = Conexion.getSingleton().cargarDatos(ssql1, "fila");
 		
 		//Primero hace la consulta y luego el update por obvias razones
-		String ssql = "UPDATE reservas set fila=('"+distribucion+"') WHERE idsala="+salas[salaX - 1][salaY - 1].getIdSala()+"";
+		String ssql = "UPDATE reservas"+multiplexAux+" set fila=('"+distribucion+"') WHERE idsala="+salas[salaX - 1][salaY - 1].getIdSala()+"";
 		Conexion.getSingleton().actualizarDatos(ssql);
 		pedido.setEstadoAnteriorSillas(estadoAnterior);
 		pedido.setSala(salas[salaX - 1][salaY - 1].getIdSala());
@@ -449,7 +473,7 @@ public class Multiplex extends JDialog {
 		//Y lo envía al siguiente paso, que es escoger la comida
 		Snacks comida = null;		
 		try {
-			comida = new Snacks(pedido);
+			comida = new Snacks(pedido, multiplexAux);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -496,7 +520,7 @@ public class Multiplex extends JDialog {
 	//Carga la distribución de las sillas desde la base de datos para cada sala teniendo en cuenta el índice de la sala, dado por la película
 	private void cargarDistribucion(int index) throws SQLException {
 		//obtiene la cadena con las sillas reservadas
-		String ssql = "SELECT * FROM reservas WHERE idsala="+index+"";
+		String ssql = "SELECT * FROM reservas"+multiplexAux+" WHERE idsala="+index+"";
 		
 		System.out.println(Conexion.getSingleton().cargarDatos(ssql, "fila"));
 		//Obtiene las sillas reservadas

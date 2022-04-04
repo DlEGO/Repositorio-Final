@@ -16,6 +16,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 
 public class Main extends JFrame {
 
@@ -24,6 +26,8 @@ public class Main extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	private JComboBox multiplex;
+
 	boolean access = false;
 	
 	/**
@@ -51,14 +55,14 @@ public class Main extends JFrame {
 		setResizable(false);
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 247, 250);
+		setBounds(100, 100, 247, 259);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JPanel mainPanel = new JPanel();
-		mainPanel.setBounds(0, 0, 241, 221);
+		mainPanel.setBounds(0, 0, 241, 249);
 		contentPane.add(mainPanel);
 		mainPanel.setLayout(null);
 		
@@ -71,7 +75,7 @@ public class Main extends JFrame {
 				}
 			
 		});
-		btnUsuario.setBounds(70, 131, 89, 23);
+		btnUsuario.setBounds(70, 155, 89, 23);
 		mainPanel.add(btnUsuario);
 		
 		JButton btnAdmin = new JButton("Entrar como administrador");
@@ -93,7 +97,7 @@ public class Main extends JFrame {
 				}
 			}
 		});
-		btnAdmin.setBounds(10, 165, 209, 23);
+		btnAdmin.setBounds(10, 189, 209, 23);
 		mainPanel.add(btnAdmin);
 		
 		idField = new JTextField();
@@ -115,12 +119,17 @@ public class Main extends JFrame {
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_1.setBounds(70, 66, 89, 14);
 		mainPanel.add(lblNewLabel_1);
+		
+		multiplex = new JComboBox();
+		multiplex.setModel(new DefaultComboBoxModel(new String[] {"Multiplex", "Titan", "Unicentro", "Plaza Central", "Gran Estacion", "Embajador", "Americas"}));
+		multiplex.setBounds(70, 122, 89, 22);
+		mainPanel.add(multiplex);
 
 	}
 	
 	private void entrar() {
-		//Primero verifica que los campos de texto no estén vacíos
-		if(!nombreField.getText().isBlank() && !idField.getText().isBlank()) {
+		//Primero verifica que los campos de texto no estén vacíos y que se haya seleccionado algún multiplex
+		if(!nombreField.getText().isBlank() && !idField.getText().isBlank() && !multiplex.getSelectedItem().equals("Multiplex")) {
 			//Crea las sentencias a ejecutar en la base de datos
 			
 			try {
@@ -133,16 +142,21 @@ public class Main extends JFrame {
 				}
 				//Si ya existe, simplemente crea un pedido e inica el frame para escoger la película
 				Pedido pedido = new Pedido(nombreField.getText(), idField.getText());
+				//se setea el nombre del multiplex en el pedido
+				pedido.setMultiplex(multiplex.getSelectedItem().toString());
+				System.out.println(multiplex.getSelectedItem().toString());
 				Multiplex cinema = new Multiplex(pedido);
 				cinema.setVisible(true);
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}catch(NumberFormatException e2) {
-				JOptionPane.showMessageDialog(null, "Error. Debe introducir un Id numérico.");
+				JOptionPane.showMessageDialog(null, "Error. Debe introducir un Id numérico válido.");
 			}
 		}else {
-			JOptionPane.showMessageDialog(null, "No puede haber algún campo vacío.");
+			JOptionPane.showMessageDialog(null, "No puede haber algún campo vacío. Y debe escoger un multiplex");
 		}
+		
+	
 	}
 }

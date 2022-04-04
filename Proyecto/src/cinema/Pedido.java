@@ -6,6 +6,7 @@ public class Pedido {
 
 	private String nombre;
 	private String ID;
+	private String multiplex;
 	private String pelicula;
 	private String horaPelicula;
 	private int sillasNormales = 0;
@@ -107,6 +108,14 @@ public class Pedido {
 
 	public void setSala(int sala) {
 		this.sala = sala;
+	}
+
+	public String getMultiplex() {
+		return multiplex;
+	}
+
+	public void setMultiplex(String multiplex) {
+		this.multiplex = multiplex;
 	}
 	
 	

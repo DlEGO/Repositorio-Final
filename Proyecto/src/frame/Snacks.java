@@ -66,7 +66,7 @@ public class Snacks extends JDialog {
 	 */
 	public static void main(String[] args) {
 		try {
-			Snacks dialog = new Snacks(null);
+			Snacks dialog = new Snacks(null, "");
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -80,7 +80,7 @@ public class Snacks extends JDialog {
 	 * @throws NumberFormatException 
 	 * @throws IOException 
 	 */
-	public Snacks(Pedido pedido)throws SQLException {
+	public Snacks(Pedido pedido, String auxMultiplex)throws SQLException {
 		//Obtiene la cantidad de cada ítem desde la base de datos y lo añade a un array
 		for(int i = 0; i < cantidadItemsInventario.length ; i++) {		
 			try {	
@@ -291,7 +291,7 @@ public class Snacks extends JDialog {
 		JButton btnNewButton = new JButton("Continuar");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				continuar(pedido);
+				continuar(pedido, auxMultiplex);
 			}
 		});
 		btnNewButton.setBounds(366, 541, 89, 23);
@@ -321,7 +321,7 @@ public class Snacks extends JDialog {
 		
 	}
 	
-	void continuar(Pedido pedido) {
+	void continuar(Pedido pedido, String auxMultiplex) {
 		boolean cantidadSuficiente = true;
 		//Lo setea en el pedido antes de ser actualizado
 		pedido.setEstadoAnteriorSnacks(cantidadItemsInventario);
@@ -370,7 +370,7 @@ public class Snacks extends JDialog {
 			pedido.setTotalSnacks(total);	
 			pedido.setSnacks(productoComprado);
 			//Y se abre la ventana de pago
-			Pago pago = new Pago(pedido);
+			Pago pago = new Pago(pedido, auxMultiplex);
 			pago.setVisible(true);
 		}
 		
