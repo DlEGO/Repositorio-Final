@@ -18,6 +18,7 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
+import java.awt.GridLayout;
 
 public class Pago extends JDialog {
 
@@ -28,7 +29,7 @@ public class Pago extends JDialog {
 	 */
 	public static void main(String[] args) {
 		try {
-			dialog = new Pago(null);
+			dialog = new Pago(new Pedido("", ""));
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -44,65 +45,99 @@ public class Pago extends JDialog {
 		setModal(true);
 		setAutoRequestFocus(false);
 		setAlwaysOnTop(true);
-		setBounds(100, 100, 307, 443);
+		setBounds(100, 100, 509, 349);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		
 		JLabel lblNewLabel_1 = new JLabel("");
-		lblNewLabel_1.setBounds(173, 10, 79, 14);
+		lblNewLabel_1.setBounds(183, 11, 79, 14);
 		contentPanel.add(lblNewLabel_1);
 		
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setBounds(173, 45, 79, 14);
+		lblNewLabel.setBounds(183, 46, 79, 14);
 		contentPanel.add(lblNewLabel);
 		
 		JLabel lblNewLabel_2 = new JLabel("Detalles del pedido");
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_2.setBounds(51, 20, 182, 14);
+		lblNewLabel_2.setBounds(173, 21, 182, 14);
 		contentPanel.add(lblNewLabel_2);
 		
-		JLabel usuarioNombre = new JLabel("Se\u00F1or(a)");
-		usuarioNombre.setHorizontalAlignment(SwingConstants.RIGHT);
-		usuarioNombre.setBounds(21, 57, 62, 14);
-		contentPanel.add(usuarioNombre);
+		JLabel lblusuarioNombre = new JLabel("Se\u00F1or(a):");
+		lblusuarioNombre.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblusuarioNombre.setBounds(31, 58, 62, 14);
+		contentPanel.add(lblusuarioNombre);
 		
-		JLabel identificacionUsuario = new JLabel("ID");
-		identificacionUsuario.setHorizontalAlignment(SwingConstants.RIGHT);
-		identificacionUsuario.setBounds(21, 82, 62, 14);
-		contentPanel.add(identificacionUsuario);
+		JLabel lblidentificacionUsuario = new JLabel("ID:");
+		lblidentificacionUsuario.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblidentificacionUsuario.setBounds(31, 83, 62, 14);
+		contentPanel.add(lblidentificacionUsuario);
 		
-		JLabel pelicula = new JLabel("Pel\u00EDcula");
-		pelicula.setHorizontalAlignment(SwingConstants.RIGHT);
-		pelicula.setBounds(21, 107, 62, 14);
-		contentPanel.add(pelicula);
+		JLabel lblpelicula = new JLabel("Pel\u00EDcula:");
+		lblpelicula.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblpelicula.setBounds(31, 108, 62, 14);
+		contentPanel.add(lblpelicula);
 		
-		JLabel reservas = new JLabel("Reserv\u00F3");
-		reservas.setHorizontalAlignment(SwingConstants.RIGHT);
-		reservas.setBounds(21, 132, 62, 14);
-		contentPanel.add(reservas);
+		JLabel lblreservas = new JLabel("Reserv\u00F3:");
+		lblreservas.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblreservas.setBounds(31, 133, 62, 14);
+		contentPanel.add(lblreservas);
 		
-		JLabel ubicacionesSillas = new JLabel("Ubicaciones");
-		ubicacionesSillas.setHorizontalAlignment(SwingConstants.RIGHT);
-		ubicacionesSillas.setBounds(21, 157, 62, 14);
-		contentPanel.add(ubicacionesSillas);
+		JLabel lblubicacionesSillas = new JLabel("Ubicaciones:");
+		lblubicacionesSillas.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblubicacionesSillas.setBounds(-15, 158, 108, 14);
+		contentPanel.add(lblubicacionesSillas);
 		
-		JLabel horaPelicula = new JLabel("Hora");
-		horaPelicula.setHorizontalAlignment(SwingConstants.RIGHT);
-		horaPelicula.setBounds(21, 182, 62, 14);
-		contentPanel.add(horaPelicula);
+		JLabel lblhoraPelicula = new JLabel("Hora:");
+		lblhoraPelicula.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblhoraPelicula.setBounds(31, 183, 62, 14);
+		contentPanel.add(lblhoraPelicula);
 		
-		JLabel lblSnacks = new JLabel("Snacks");
+		JLabel lblSnacks = new JLabel("Snacks:");
 		lblSnacks.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblSnacks.setBounds(21, 207, 62, 14);
+		lblSnacks.setBounds(331, 58, 48, 14);
 		contentPanel.add(lblSnacks);
 		
+		JLabel nombreUsuario = new JLabel("New label");
+		nombreUsuario.setBounds(96, 58, 217, 14);
+		contentPanel.add(nombreUsuario);
+		
+		JLabel idUsuario = new JLabel("New label");
+		idUsuario.setBounds(96, 83, 217, 14);
+		contentPanel.add(idUsuario);
+		
+		JLabel nombrePelicula = new JLabel("New label");
+		nombrePelicula.setBounds(96, 108, 217, 14);
+		contentPanel.add(nombrePelicula);
+		
+		JLabel ctdSillasReservadas = new JLabel("New label");
+		ctdSillasReservadas.setBounds(96, 133, 217, 14);
+		contentPanel.add(ctdSillasReservadas);
+		
+		JLabel ubicacionesSillas = new JLabel("New label");
+		ubicacionesSillas.setBounds(96, 158, 217, 14);
+		contentPanel.add(ubicacionesSillas);
+		
+		JLabel horaPelicula = new JLabel("New label");
+		horaPelicula.setBounds(96, 183, 217, 14);
+		contentPanel.add(horaPelicula);
+		
+		JPanel snacksPanel = new JPanel();
+		snacksPanel.setBounds(337, 83, 237, 167);
+		contentPanel.add(snacksPanel);
+		snacksPanel.setLayout(new GridLayout(0, 1, 0, 7));
+		
+		for(int i = 0; i < pedido.getSnacks().size() ; i++) {
+			JLabel snack = new JLabel(pedido.getSnacks().get(i));
+			//JLabel snack = new JLabel("eqiudte");		
+			snack.setVisible(true);
+			snacksPanel.add(snack);
+		}
 		
 		JPanel buttonPane = new JPanel();
 		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		getContentPane().add(buttonPane, BorderLayout.SOUTH);
-			
 		JButton pagarButton = new JButton("Pagar");
 		pagarButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -131,19 +166,42 @@ public class Pago extends JDialog {
 		cancelButton.setActionCommand("Cancel");
 		buttonPane.add(cancelButton);
 		
+		JLabel lblTotalBoletas = new JLabel("Total Boletas:");
+		lblTotalBoletas.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblTotalBoletas.setBounds(0, 208, 93, 14);
+		contentPanel.add(lblTotalBoletas);
+		
+		JLabel lblTotalSnacks = new JLabel("Total Snacks:");
+		lblTotalSnacks.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblTotalSnacks.setBounds(0, 233, 93, 14);
+		contentPanel.add(lblTotalSnacks);
+		
+		JLabel totalBoletas = new JLabel("");
+		totalBoletas.setBounds(96, 208, 217, 14);
+		contentPanel.add(totalBoletas);
+		
+		JLabel totalSnacks = new JLabel((String) null);
+		totalSnacks.setBounds(96, 233, 217, 14);
+		contentPanel.add(totalSnacks);
+		
+		JLabel lblTotal = new JLabel("Total:");
+		lblTotal.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblTotal.setBounds(0, 258, 93, 14);
+		contentPanel.add(lblTotal);
+		
+		JLabel total = new JLabel("");
+		total.setBounds(96, 258, 217, 14);
+		contentPanel.add(total);
+		
 		//Imprimir pedido
-		System.out.println();System.out.println();System.out.println();
-		System.out.println("Señor(a) " + pedido.getNombre());
-		System.out.println("Con ID: " + pedido.getID());
-		System.out.println("Para la película " + pedido.getPelicula());
-		System.out.println("Reservó: " + pedido.getSillasNormales() + " Sillas normales, " + pedido.getSillasVIP() + " Sillas VIP, " + pedido.getSillasPref() + " Sillas preferenciales.");
-		System.out.println("En las ubicaciones: " + pedido.getUbicacionSillas());
-		System.out.println("Para la hora: " + pedido.getHoraPelicula());
-		System.out.println("Con los siguientes snacks:");
-		for(int i = 0; i < pedido.getSnacks().size() ; i++) {
-			System.out.println(pedido.getSnacks().get(i));
-		}
-		System.out.println("Para un total de: " + pedido.getTotalSnacks());
-
-	}
+		nombreUsuario.setText(pedido.getNombre());
+		idUsuario.setText(pedido.getID());
+		nombrePelicula.setText(pedido.getPelicula());
+		ctdSillasReservadas.setText(pedido.getSillasNormales() + " generales, " + pedido.getSillasVIP() + " VIP, " + pedido.getSillasPref() + " preferenciales.");
+		ubicacionesSillas.setText(pedido.getUbicacionSillas());
+		horaPelicula.setText(pedido.getHoraPelicula());
+		totalBoletas.setText(String.valueOf(pedido.getTotalSillas()));
+		totalSnacks.setText(String.valueOf(pedido.getTotalSnacks()));
+		total.setText(String.valueOf(pedido.getTotalSnacks() + pedido.getTotalSillas()));
+	}	
 }

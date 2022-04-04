@@ -68,7 +68,6 @@ public class Main extends JFrame {
 		btnUsuario.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					entrar();
-					
 				}
 			
 		});
@@ -123,9 +122,10 @@ public class Main extends JFrame {
 		//Primero verifica que los campos de texto no estén vacíos
 		if(!nombreField.getText().isBlank() && !idField.getText().isBlank()) {
 			//Crea las sentencias a ejecutar en la base de datos
-			String ssql1 = "INSERT INTO usuarios (nombre, identificacion) VALUES ('"+ nombreField.getText() +"', '"+ idField.getText() +"')";
-			String ssql = "SELECT * FROM usuarios WHERE identificacion='"+ idField.getText() +"'";
+			
 			try {
+				String ssql1 = "INSERT INTO usuarios (nombre, identificacion) VALUES ('"+ nombreField.getText() +"', '"+ Integer.parseInt(idField.getText()) +"')";
+				String ssql = "SELECT * FROM usuarios WHERE identificacion='"+ Integer.parseInt(idField.getText()) +"'";
 				//Primero verifica solamente que no exista un registro con ese documento de identidad (No consulta por nombre)
 				if(!Conexion.getSingleton().validarCredenciales(ssql)) {
 					//Si no existe el registro, lo añade a la base de datos
@@ -138,6 +138,8 @@ public class Main extends JFrame {
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
+			}catch(NumberFormatException e2) {
+				JOptionPane.showMessageDialog(null, "Error. Debe introducir un Id numérico.");
 			}
 		}else {
 			JOptionPane.showMessageDialog(null, "No puede haber algún campo vacío.");
