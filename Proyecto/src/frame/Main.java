@@ -133,7 +133,7 @@ public class Main extends JFrame {
 				}
 				//Si ya existe, simplemente crea un pedido e inica el frame para escoger la película
 				Pedido pedido = new Pedido(nombreField.getText(), idField.getText());
-				Cinema cinema = new Cinema(pedido);
+				Multiplex cinema = new Multiplex(pedido);
 				cinema.setVisible(true);
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block

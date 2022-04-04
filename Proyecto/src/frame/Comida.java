@@ -1,7 +1,9 @@
 package frame;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Font;
 
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
@@ -109,174 +111,181 @@ public class Comida extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(0, 0, 484, 530);
-		panel_1.setOpaque(false);
-		contentPanel.add(panel_1);
-		panel_1.setLayout(null);
+		JPanel cantidadesPanel = new JPanel();
+		cantidadesPanel.setBounds(39, 71, 403, 384);
+		cantidadesPanel.setOpaque(false);
+		contentPanel.add(cantidadesPanel);
+		cantidadesPanel.setLayout(new GridLayout(3, 3, 30, 150));
 		
-		DeTodito = new JTextField();
-		DeTodito.setBounds(342, 150, 80, 20);
-		panel_1.add(DeTodito);
-		DeTodito.setColumns(10);
-		DeTodito.setName("De Todito");
-		productos.add(DeTodito);
+		JPanel preciosPanel = new JPanel();
+		preciosPanel.setBounds(0, 0, 484, 530);
+		preciosPanel.setOpaque(false);
+		contentPanel.add(preciosPanel);
+		preciosPanel.setLayout(null);
 		
 		PapasPollo = new JTextField();
 		PapasPollo.setBounds(57, 150, 80, 20);
-		panel_1.add(PapasPollo);
+		preciosPanel.add(PapasPollo);
 		PapasPollo.setColumns(10);
 		PapasPollo.setName("Papas de pollo");
 		productos.add(PapasPollo);
 		
 		PapasNatural = new JTextField();
 		PapasNatural.setBounds(199, 150, 80, 20);
-		panel_1.add(PapasNatural);
+		preciosPanel.add(PapasNatural);
 		PapasNatural.setColumns(10);
 		PapasNatural.setName("Papas natural");
 		productos.add(PapasNatural);
 		
-		JetPequena = new JTextField();
-		JetPequena.setColumns(10);
-		JetPequena.setBounds(342, 314, 80, 20);
-		panel_1.add(JetPequena);
-		JetPequena.setName("Jet Pequeña");
-		productos.add(JetPequena);
+		DeTodito = new JTextField();
+		DeTodito.setBounds(342, 150, 80, 20);
+		preciosPanel.add(DeTodito);
+		DeTodito.setColumns(10);
+		DeTodito.setName("De Todito");
+		productos.add(DeTodito);
+	
 		
 		Doritos = new JTextField();
 		Doritos.setColumns(10);
 		Doritos.setBounds(57, 314, 80, 20);
-		panel_1.add(Doritos);
+		preciosPanel.add(Doritos);
 		Doritos.setName("Doritos");
 		productos.add(Doritos);
 		
 		JetJumbo = new JTextField();
 		JetJumbo.setColumns(10);
 		JetJumbo.setBounds(199, 314, 80, 20);
-		panel_1.add(JetJumbo);
+		preciosPanel.add(JetJumbo);
 		JetJumbo.setName("Jet Jumbo");
 		productos.add(JetJumbo);
 		
-		Colombiana = new JTextField();
-		Colombiana.setColumns(10);
-		Colombiana.setBounds(342, 486, 80, 20);
-		panel_1.add(Colombiana);
-		Colombiana.setName("Colombiana");
-		productos.add(Colombiana);
+		JetPequena = new JTextField();
+		JetPequena.setColumns(10);
+		JetPequena.setBounds(342, 314, 80, 20);
+		preciosPanel.add(JetPequena);
+		JetPequena.setName("Jet Pequeña");
+		productos.add(JetPequena);
 		
 		Chokis = new JTextField();
 		Chokis.setColumns(10);
 		Chokis.setBounds(57, 486, 80, 20);
-		panel_1.add(Chokis);
+		preciosPanel.add(Chokis);
 		Chokis.setName("Chokis");
-		productos.add(Chokis);
+		productos.add(Chokis);	
 		
 		CocaCola = new JTextField();
 		CocaCola.setColumns(10);
 		CocaCola.setBounds(199, 486, 80, 20);
-		panel_1.add(CocaCola);
+		preciosPanel.add(CocaCola);
 		CocaCola.setName("Coca-Cola");
 		productos.add(CocaCola);
+		
+		Colombiana = new JTextField();
+		Colombiana.setColumns(10);
+		Colombiana.setBounds(342, 486, 80, 20);
+		preciosPanel.add(Colombiana);
+		Colombiana.setName("Colombiana");
+		productos.add(Colombiana);
 		
 		//-----------------------------------------
 		JLabel lDetodito = new JLabel("7500");
 		lDetodito.setHorizontalAlignment(SwingConstants.CENTER);
 		lDetodito.setBounds(343, 11, 80, 28);
-		panel_1.add(lDetodito);
+		preciosPanel.add(lDetodito);
 		
 		JLabel lPapasNat = new JLabel("3000");
 		lPapasNat.setHorizontalAlignment(SwingConstants.CENTER);
 		lPapasNat.setBounds(199, 11, 80, 28);
-		panel_1.add(lPapasNat);
+		preciosPanel.add(lPapasNat);
 		
 		JLabel lPapaspollo = new JLabel("3100");
 		lPapaspollo.setHorizontalAlignment(SwingConstants.CENTER);
 		lPapaspollo.setBounds(57, 11, 80, 28);
-		panel_1.add(lPapaspollo);
+		preciosPanel.add(lPapaspollo);
 		
 		JLabel lJetp = new JLabel("1500");
 		lJetp.setHorizontalAlignment(SwingConstants.CENTER);
 		lJetp.setBounds(343, 181, 80, 28);
-		panel_1.add(lJetp);
+		preciosPanel.add(lJetp);
 		
 		JLabel lJetg = new JLabel("5000");
 		lJetg.setHorizontalAlignment(SwingConstants.CENTER);
 		lJetg.setBounds(199, 181, 80, 28);
-		panel_1.add(lJetg);
+		preciosPanel.add(lJetg);
 		
 		JLabel lDoritos = new JLabel("3000");
 		lDoritos.setHorizontalAlignment(SwingConstants.CENTER);
 		lDoritos.setBounds(57, 181, 80, 28);
-		panel_1.add(lDoritos);
+		preciosPanel.add(lDoritos);
 		
 		JLabel lColombiana = new JLabel("3000");
 		lColombiana.setHorizontalAlignment(SwingConstants.CENTER);
 		lColombiana.setBounds(342, 355, 80, 28);
-		panel_1.add(lColombiana);
+		preciosPanel.add(lColombiana);
 		
 		JLabel lCocacola = new JLabel("3500");
 		lCocacola.setHorizontalAlignment(SwingConstants.CENTER);
 		lCocacola.setBounds(198, 355, 80, 28);
-		panel_1.add(lCocacola);
+		preciosPanel.add(lCocacola);
 		
 		JLabel lChokis = new JLabel("2000");
 		lChokis.setHorizontalAlignment(SwingConstants.CENTER);
 		lChokis.setBounds(56, 355, 80, 28);
-		panel_1.add(lChokis);
+		preciosPanel.add(lChokis);
 		borrarSeleccion();
 
 		
-		JPanel panel = new JPanel();
-		panel.setBackground(UIManager.getColor("Button.darkShadow"));
-		panel.setBounds(39, 26, 403, 471);
-		panel.setOpaque(false);
-		contentPanel.add(panel);
-		panel.setLayout(new GridLayout(3, 3, 30, 50));
+		JPanel productosPanel = new JPanel();
+		productosPanel.setBackground(UIManager.getColor("Button.darkShadow"));
+		productosPanel.setBounds(39, 26, 403, 471);
+		productosPanel.setOpaque(false);
+		contentPanel.add(productosPanel);
+		productosPanel.setLayout(new GridLayout(3, 3, 30, 50));
 		
 		JLabel papasNatural = new JLabel("");
 		papasNatural.setHorizontalAlignment(SwingConstants.CENTER);
 		papasNatural.setIcon(new ImageIcon(Comida.class.getResource("/images/pmp.png")));
-		panel.add(papasNatural);
+		productosPanel.add(papasNatural);
 		
 		JLabel papasPollo = new JLabel("");
 		papasPollo.setHorizontalAlignment(SwingConstants.CENTER);
 		papasPollo.setIcon(new ImageIcon(Comida.class.getResource("/images/pmn.png")));
-		panel.add(papasPollo);
+		productosPanel.add(papasPollo);
 		
 		JLabel detoditoFamiliar = new JLabel("");
 		detoditoFamiliar.setHorizontalAlignment(SwingConstants.CENTER);
 		detoditoFamiliar.setIcon(new ImageIcon(Comida.class.getResource("/images/dtf.png")));
-		panel.add(detoditoFamiliar);
+		productosPanel.add(detoditoFamiliar);
 		
 		JLabel doritos = new JLabel("");
 		doritos.setHorizontalAlignment(SwingConstants.CENTER);
 		doritos.setIcon(new ImageIcon(Comida.class.getResource("/images/dad.png")));
-		panel.add(doritos);
+		productosPanel.add(doritos);
 		
 		JLabel chocolateG = new JLabel("");
 		chocolateG.setHorizontalAlignment(SwingConstants.CENTER);
 		chocolateG.setIcon(new ImageIcon(Comida.class.getResource("/images/cjj.png")));
-		panel.add(chocolateG);
+		productosPanel.add(chocolateG);
 		
 		JLabel chocolateP = new JLabel("");
 		chocolateP.setHorizontalAlignment(SwingConstants.CENTER);
 		chocolateP.setIcon(new ImageIcon(Comida.class.getResource("/images/cjp.png")));
-		panel.add(chocolateP);
+		productosPanel.add(chocolateP);
 		
 		JLabel galletasChokis = new JLabel("");
 		galletasChokis.setHorizontalAlignment(SwingConstants.CENTER);
 		galletasChokis.setIcon(new ImageIcon(Comida.class.getResource("/images/gcn.png")));
-		panel.add(galletasChokis);
+		productosPanel.add(galletasChokis);
 		
 		JLabel cocacola = new JLabel("");
 		cocacola.setHorizontalAlignment(SwingConstants.CENTER);
 		cocacola.setIcon(new ImageIcon(Comida.class.getResource("/images/ccp.png")));
-		panel.add(cocacola);
+		productosPanel.add(cocacola);
 		
 		JLabel colombiana = new JLabel("");
 		colombiana.setHorizontalAlignment(SwingConstants.CENTER);
 		colombiana.setIcon(new ImageIcon(Comida.class.getResource("/images/cpc.png")));
-		panel.add(colombiana);
+		productosPanel.add(colombiana);
 		//----------------------------------------------------------
 		
 		JButton btnNewButton = new JButton("Continuar");
@@ -296,40 +305,68 @@ public class Comida extends JDialog {
 		});
 		btnNewButton_1.setBounds(202, 541, 154, 23);
 		contentPanel.add(btnNewButton_1);
+		
+		for(int i = 0; i < 9 ; i++) {
+			JLabel cantidad = new JLabel("x" + String.valueOf(cantidadItemsInventario[i]));
+			cantidad.setVisible(true);
+			cantidad.setHorizontalAlignment(SwingConstants.CENTER);
+			cantidad.setFont(new Font("Arial", 1, 25));
+			cantidad.setForeground(Color.black);
+			cantidad.setOpaque(true);
+			cantidad.setBackground(new Color(211, 211, 211, 150));
+			cantidadesPanel.add(cantidad);
+			System.out.println(productos.get(i).getText() + "., "+ cantidadItemsInventario[i] + "; " + productos.get(i).getName());
+
+		}
+		
 	}
 	
 	void continuar(Pedido pedido) {
+		boolean cantidadSuficiente = true;
+		pedido.setEstadoAnteriorSnacks(cantidadItemsInventario);
 		//En este arraylist van los productos comprados
 		ArrayList<String> productoComprado = new ArrayList<String>();
 		
 		//Envía los productos comprados y la cantidad por separado por medio de un arrayList
 		//Primero se escogen aquellos producto donde se ingresó una cantidad diferente de 0
 		for(int i = 0; i < productos.size() ; i++) {
+
 			if(!productos.get(i).getText().equals("")) {
-				String producto = productos.get(i).getName() + ": " + productos.get(i).getText();
-				productoComprado.add(producto);
+				//System.out.println(Integer.parseInt(productos.get(i).getText()) + "., "+ cantidadItemsInventario[i]);
+				if(Integer.parseInt(productos.get(i).getText()) > cantidadItemsInventario[i]) {
+					JOptionPane.showMessageDialog(this, "Error. No hay sufiente cantidad de " + productos.get(i).getName());
+					cantidadSuficiente = false;
+				}else {
+					cantidadItemsInventario[i] -= Integer.parseInt(productos.get(i).getText());
+					String producto = productos.get(i).getName() + ": " + productos.get(i).getText();
+					productoComprado.add(producto);
+				}
+				
 			}
 		}
 		
-		//después pone ceros donde hay espacios vacíos, para evitar un error en la suma
-		for(int i = 0; i < 9 ; i++){
-			if(productos.get(i).getText().equals("")) {
-				productos.get(i).setText("0");
+		if(cantidadSuficiente) {
+			//después pone ceros donde hay espacios vacíos, para evitar un error en la suma
+			for(int i = 0; i < 9 ; i++){
+				if(productos.get(i).getText().equals("")) {
+					productos.get(i).setText("0");
+				}
 			}
+			
+			//Calcula el total
+			//Hace la sumatoria del producto de cada ítem por su precio
+			//*Se agregan los precios a un arreglo en el mismo orden en el que se hacen los JTextField para simplificar
+			for(int i = 0 ; i < 9 ; i++) {
+				total += Integer.parseInt(productos.get(i).getText()) * precios[i];
+			}
+			//Se setean los parámetros dentro del objeto pedido enviado desde Multiplex
+			pedido.setTotalSnacks(total);	
+			pedido.setSnacks(productoComprado);
+			//Y se abre la ventana de pago
+			Pago pago = new Pago(pedido);
+			pago.setVisible(true);
 		}
 		
-		//Calcula el total
-		//Hace la sumatoria del producto de cada ítem por su precio
-		//*Se agregan los precios a un arreglo en el mismo orden en el que se hacen los JTextField para simplificar
-		for(int i = 0 ; i < 9 ; i++) {
-			total += Integer.parseInt(productos.get(i).getText()) * precios[i];
-		}
-		//Se setean los parámetros dentro del objeto pedido enviado desde Multiplex
-		pedido.setTotalSnacks(total);	
-		pedido.setSnacks(productoComprado);
-		//Y se abre la ventana de pago
-		Pago pago = new Pago(pedido);
-		pago.setVisible(true);
 	}
 	
 	//Setea el total a 0 para volver a ser calculado según los valores ingresados en los campos de texto

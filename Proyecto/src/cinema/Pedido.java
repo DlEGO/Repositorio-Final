@@ -16,8 +16,8 @@ public class Pedido {
 	private String ubicacionSillas;
 	private String estadoAnteriorSillas;
 	private ArrayList<String> snacks = new ArrayList<String>();
+	private int[] estadoAnteriorSnacks = new int[9];
 	private int totalSnacks = 0;
-	private String estadoAnteriorSnacks;
 
 	
 	public Pedido(String nombre, String ID) {
@@ -93,11 +93,11 @@ public class Pedido {
 		this.estadoAnteriorSillas = estadoSillas;
 	}
 
-	public String getEstadoAnteriorSnacks() {
+	public int[] getEstadoAnteriorSnacks() {
 		return estadoAnteriorSnacks;
 	}
 
-	public void setEstadoAnteriorSnacks(String estadoAnteriorSnacks) {
+	public void setEstadoAnteriorSnacks(int[] estadoAnteriorSnacks) {
 		this.estadoAnteriorSnacks = estadoAnteriorSnacks;
 	}
 

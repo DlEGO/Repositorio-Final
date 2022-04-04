@@ -35,7 +35,7 @@ import java.awt.GridLayout;
 import javax.swing.JLabel;
 import java.awt.Insets;
 
-public class Cinema extends JDialog {
+public class Multiplex extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private ArrayList<Pelicula> peliculas = new ArrayList<Pelicula>();
@@ -44,7 +44,8 @@ public class Cinema extends JDialog {
 	private Sala[][] salas;
 	public int precio = 0;
 	public int salaX = 0, salaY = 0;
-	//Matriz sillas es la matriz de botones asignado en la misma posición como se ven en la app
+	//Matriz sillas es la matriz de botones, donde se asignan en la misma posición según como se ve en la distribución al ejecutar
+	//la app
 	private JButton sillas[][] = new JButton[5][10];
 	private String[][] nombrePosicionSilla = {{"A0","A1","A2","A3","A4","A5","A6","A7","A8","A9"}
 										 ,{"B0","B1","B2","B3","B4","B5","B6","B7","B8","B9"}
@@ -54,7 +55,7 @@ public class Cinema extends JDialog {
 
 	public static void main(String[] args) {
 		try {
-			Cinema dialog = new Cinema(null);
+			Multiplex dialog = new Multiplex(null);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -62,7 +63,7 @@ public class Cinema extends JDialog {
 		}
 	}
 
-	public Cinema(Pedido pedido) throws SQLException {
+	public Multiplex(Pedido pedido) throws SQLException {
 				
 		crearSalas();
 			
@@ -181,7 +182,6 @@ public class Cinema extends JDialog {
 							}
 									
 						}
-								//imprimirSillas();
 								
 					}
 				});
