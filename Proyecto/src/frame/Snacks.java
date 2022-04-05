@@ -54,7 +54,8 @@ public class Snacks extends JDialog {
 	private JTextField Chokis;
 	private JTextField CocaCola;
 	
-	private int[] cantidadItemsInventario = new int[9];
+	private int[] cantidadItemsInventario = {0,0,0,0,0,0,0,0,0};
+	private int[] auxCantidadItems = new int[9];
 	private int[] precios = {7500,3100,3000,1500,3000,5000,3000,2000,3500};
 	private int total = 0;
 	
@@ -64,16 +65,6 @@ public class Snacks extends JDialog {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		try {
-			Snacks dialog = new Snacks(null, "");
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 	/**
 	 * Create the dialog.
 	 * @throws SQLException 
@@ -81,22 +72,7 @@ public class Snacks extends JDialog {
 	 * @throws IOException 
 	 */
 	public Snacks(Pedido pedido, String auxMultiplex)throws SQLException {
-		//Obtiene la cantidad de cada ítem desde la base de datos y lo añade a un array
-		for(int i = 0; i < cantidadItemsInventario.length ; i++) {		
-			try {	
-				//el i + 1 es porque los índices en la bd empiezan desde 1
-				String ssql = "SELECT * FROM inventariocomida WHERE idproducto="+ (i + 1) +"";
-				cantidadItemsInventario[i] = Integer.parseInt(Conexion.getSingleton().cargarDatos(ssql, "cantidad"));
-				System.out.println(cantidadItemsInventario[i]);
-			} catch (NumberFormatException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}	
-			catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}	
-		}
+		cargarCantidadItems();
 		
 		
 		//Cada JTextField es añadido a un arraylist para simplificar codigo adelante
@@ -292,6 +268,7 @@ public class Snacks extends JDialog {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				continuar(pedido, auxMultiplex);
+				btnNewButton.setEnabled(false);
 			}
 		});
 		btnNewButton.setBounds(366, 541, 89, 23);
@@ -305,7 +282,8 @@ public class Snacks extends JDialog {
 		});
 		btnNewButton_1.setBounds(202, 541, 154, 23);
 		contentPanel.add(btnNewButton_1);
-		
+	
+		//Instancia 9 labels para poner la cantidad de cada producto
 		for(int i = 0; i < 9 ; i++) {
 			JLabel cantidad = new JLabel("x" + String.valueOf(cantidadItemsInventario[i]));
 			cantidad.setVisible(true);
@@ -315,32 +293,34 @@ public class Snacks extends JDialog {
 			cantidad.setOpaque(true);
 			cantidad.setBackground(new Color(211, 211, 211, 150));
 			cantidadesPanel.add(cantidad);
-			System.out.println(productos.get(i).getText() + "., "+ cantidadItemsInventario[i] + "; " + productos.get(i).getName());
-
 		}
 		
 	}
+
 	
-	void continuar(Pedido pedido, String auxMultiplex) {
+	private void continuar(Pedido pedido, String auxMultiplex) {
 		boolean cantidadSuficiente = true;
 		//Lo setea en el pedido antes de ser actualizado
 		pedido.setEstadoAnteriorSnacks(cantidadItemsInventario);
 		//En este arraylist van los productos comprados
 		ArrayList<String> productoComprado = new ArrayList<String>();
+		System.out.println(auxCantidadItems[0] + "eas");
 		
 		//Envía los productos comprados y la cantidad por separado por medio de un arrayList
 		//Primero se escogen aquellos producto donde se ingresó una cantidad diferente de 0
 		for(int i = 0; i < productos.size() ; i++) {
 
 			if(!productos.get(i).getText().equals("")) {
+				
 				//Se actualiza la cantidad de prodcutos de cada uno
 				if(Integer.parseInt(productos.get(i).getText()) > cantidadItemsInventario[i]) {
+					
 					JOptionPane.showMessageDialog(this, "Error. No hay sufiente cantidad de " + productos.get(i).getName());
 					cantidadSuficiente = false;
 				}else {
-					cantidadItemsInventario[i] -= Integer.parseInt(productos.get(i).getText());
+
 					try {
-						String ssql = "UPDATE inventariocomida set cantidad=('" + cantidadItemsInventario[i] + "') WHERE idproducto="+ (i + 1) + "";
+						String ssql = "UPDATE inventariocomida set cantidad=('" + (cantidadItemsInventario[i] - Integer.parseInt(productos.get(i).getText())) + "') WHERE idproducto="+ (i + 1) + "";
 						Conexion.getSingleton().actualizarDatos(ssql);
 					} catch (SQLException e) {
 						e.printStackTrace();
@@ -350,8 +330,10 @@ public class Snacks extends JDialog {
 				}
 				
 			}
+			
+
 		}
-		
+		System.out.println(auxCantidadItems[0]  + "btss");
 		if(cantidadSuficiente) {
 			//después pone ceros donde hay espacios vacíos, para evitar un error en la suma
 			for(int i = 0; i < 9 ; i++){
@@ -376,8 +358,29 @@ public class Snacks extends JDialog {
 		
 	}
 	
+	
+	private void cargarCantidadItems() {
+	//Obtiene la cantidad de cada ítem desde la base de datos y lo añade a un array
+		for(int i = 0; i < cantidadItemsInventario.length ; i++) {		
+			try {	
+				//el i + 1 es porque los índices en la bd empiezan desde 1
+				String ssql = "SELECT * FROM inventariocomida WHERE idproducto="+ (i + 1) +"";
+				cantidadItemsInventario[i] = Integer.parseInt(Conexion.getSingleton().cargarDatos(ssql, "cantidad"));
+				System.out.println(cantidadItemsInventario[i] + " bd");
+			} catch (NumberFormatException e) {
+					// TODO Auto-generated catch block
+				e.printStackTrace();
+			}	
+				catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}	
+		}
+		auxCantidadItems = cantidadItemsInventario;
+	}
+	
 	//Setea el total a 0 para volver a ser calculado según los valores ingresados en los campos de texto
-	void borrarSeleccion() {
+	private void borrarSeleccion() {
 		total = 0;
 		for(int i = 0; i < productos.size() ; i++) {
 			productos.get(i).setText("");

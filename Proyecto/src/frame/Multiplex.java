@@ -14,9 +14,6 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -27,16 +24,15 @@ import cinema.Pelicula;
 import cinema.Sala;
 import conexion.Conexion;
 
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
 import javax.swing.JLabel;
-import java.awt.Insets;
 
 public class Multiplex extends JDialog {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private ArrayList<Pelicula> peliculas = new ArrayList<Pelicula>();
 	private ArrayList<JButton> peliculasButtons = new ArrayList<JButton>();
@@ -471,14 +467,15 @@ public class Multiplex extends JDialog {
 		pedido.setHoraPelicula(salas[salaX - 1][salaY - 1].getHorario());
 		
 		//Y lo envía al siguiente paso, que es escoger la comida
-		Snacks comida = null;		
 		try {
+			Snacks comida;		
 			comida = new Snacks(pedido, multiplexAux);
+			comida.setVisible(true);
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
-		comida.setVisible(true);
 
 		
 		actualizarSillas();

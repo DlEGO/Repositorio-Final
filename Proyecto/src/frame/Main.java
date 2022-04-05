@@ -144,7 +144,6 @@ public class Main extends JFrame {
 				Pedido pedido = new Pedido(nombreField.getText(), idField.getText());
 				//se setea el nombre del multiplex en el pedido
 				pedido.setMultiplex(multiplex.getSelectedItem().toString());
-				System.out.println(multiplex.getSelectedItem().toString());
 				Multiplex cinema = new Multiplex(pedido);
 				cinema.setVisible(true);
 			} catch (SQLException e1) {

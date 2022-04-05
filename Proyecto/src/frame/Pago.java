@@ -24,6 +24,8 @@ public class Pago extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	static Pago dialog;
+	String[] options = {"Ok"};
+
 	/**
 	 * Launch the application.
 	 */
@@ -130,7 +132,6 @@ public class Pago extends JDialog {
 		
 		for(int i = 0; i < pedido.getSnacks().size() ; i++) {
 			JLabel snack = new JLabel(pedido.getSnacks().get(i));
-			//JLabel snack = new JLabel("eqiudte");		
 			snack.setVisible(true);
 			snacksPanel.add(snack);
 		}
@@ -153,13 +154,10 @@ public class Pago extends JDialog {
 		cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					String ssql = "UPDATE reservas"+auxMultiplex+" set fila=('"+ pedido.getEstadoAnteriorSillas() +"') WHERE idsala=" + pedido.getSala() + "";
-					System.out.println(ssql);
-					Conexion.getSingleton().actualizarDatos(ssql);
-					System.exit(0);
+					cancelar(pedido, auxMultiplex);
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
-					JOptionPane.showMessageDialog(null, "Ocurrió un error y no fue posible deshacer la operación. Intente nuevamente.");
+					e1.printStackTrace();
 				}
 			}
 		});
@@ -222,10 +220,42 @@ public class Pago extends JDialog {
 		String ssql = "INSERT INTO pedidos (idCliente, nombrePelicula, valorBoletas, multiplex) VALUES ('"+ pedido.getID() +"', '"+ pedido.getPelicula() +"', '"+ pedido.getTotalSillas() +"', '"+pedido.getMultiplex()+"')";
 		try {
 			Conexion.getSingleton().actualizarDatos(ssql);
-			JOptionPane.showMessageDialog(this, "Se ha completado el pago.");
+			int opcion = JOptionPane.showOptionDialog(this, "Se ha completado el pago, se cerrará la sesión.", "Pago realizado exitosamente", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);	
+			if(opcion == 0) {
+				System.exit(0);
+			}
+			
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			JOptionPane.showMessageDialog(this, "Error. No ha sido posible completar el pago.");
 		}
+	}
+	
+	private void cancelar(Pedido pedido, String auxMultiplex) throws SQLException {
+		try {
+			//Conexion.getSingleton().actualizarDatos("start transaction");
+			//Conexion.getSingleton().conn.setAutoCommit(false);
+
+			//Transaccion de cancelacion
+			String ssql = "UPDATE reservas"+auxMultiplex+" set fila=('"+ pedido.getEstadoAnteriorSillas() +"') WHERE idsala=" + pedido.getSala() + "";
+			Conexion.getSingleton().actualizarDatos(ssql);
+			for(int i = 0; i < 9 ; i++) {
+				System.out.println(pedido.getEstadoAnteriorSnacks()[i] + "esansn");
+				String ssql1 = "UPDATE inventariocomida set cantidad=('"+pedido.getEstadoAnteriorSnacks()[i]+"') WHERE idproducto="+(i+1)+"";
+				Conexion.getSingleton().actualizarDatos(ssql1);
+			}
+			//Conexion.getSingleton().conn.commit();
+			//---------------------------
+			
+			int opcion = JOptionPane.showOptionDialog(this, "Se ha cancelado la operación. Se cerrará la sesión.", "Operación cancelada", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);	
+			if(opcion == 0) {
+				System.exit(0);
+			}
+		} catch (SQLException e1) {
+			//Conexion.getSingleton().conn.rollback();
+			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(this, "Ocurrió un error y no fue posible deshacer la operación. Intente nuevamente.");
+		}
+		Conexion.getSingleton().conn.setAutoCommit(true);
 	}
 }
