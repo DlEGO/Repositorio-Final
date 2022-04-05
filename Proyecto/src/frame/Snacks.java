@@ -55,8 +55,7 @@ public class Snacks extends JDialog {
 	private JTextField CocaCola;
 	
 	private int[] cantidadItemsInventario = {0,0,0,0,0,0,0,0,0};
-	private int[] auxCantidadItems = new int[9];
-	private int[] precios = {7500,3100,3000,1500,3000,5000,3000,2000,3500};
+	private int[] precios = {3100,3000,7500,3000,5000,1500,2000,3500,3000};
 	private int total = 0;
 	
 	ArrayList<JTextField> productos = new ArrayList<JTextField>();
@@ -304,7 +303,6 @@ public class Snacks extends JDialog {
 		pedido.setEstadoAnteriorSnacks(cantidadItemsInventario);
 		//En este arraylist van los productos comprados
 		ArrayList<String> productoComprado = new ArrayList<String>();
-		System.out.println(auxCantidadItems[0] + "eas");
 		
 		//Envía los productos comprados y la cantidad por separado por medio de un arrayList
 		//Primero se escogen aquellos producto donde se ingresó una cantidad diferente de 0
@@ -333,7 +331,6 @@ public class Snacks extends JDialog {
 			
 
 		}
-		System.out.println(auxCantidadItems[0]  + "btss");
 		if(cantidadSuficiente) {
 			//después pone ceros donde hay espacios vacíos, para evitar un error en la suma
 			for(int i = 0; i < 9 ; i++){
@@ -376,7 +373,6 @@ public class Snacks extends JDialog {
 				e1.printStackTrace();
 			}	
 		}
-		auxCantidadItems = cantidadItemsInventario;
 	}
 	
 	//Setea el total a 0 para volver a ser calculado según los valores ingresados en los campos de texto

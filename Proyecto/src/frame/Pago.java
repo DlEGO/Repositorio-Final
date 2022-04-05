@@ -233,10 +233,9 @@ public class Pago extends JDialog {
 	
 	private void cancelar(Pedido pedido, String auxMultiplex) throws SQLException {
 		try {
-			//Conexion.getSingleton().actualizarDatos("start transaction");
-			//Conexion.getSingleton().conn.setAutoCommit(false);
 
-			//Transaccion de cancelacion
+			//--------------------------
+			
 			String ssql = "UPDATE reservas"+auxMultiplex+" set fila=('"+ pedido.getEstadoAnteriorSillas() +"') WHERE idsala=" + pedido.getSala() + "";
 			Conexion.getSingleton().actualizarDatos(ssql);
 			for(int i = 0; i < 9 ; i++) {
@@ -244,7 +243,6 @@ public class Pago extends JDialog {
 				String ssql1 = "UPDATE inventariocomida set cantidad=('"+pedido.getEstadoAnteriorSnacks()[i]+"') WHERE idproducto="+(i+1)+"";
 				Conexion.getSingleton().actualizarDatos(ssql1);
 			}
-			//Conexion.getSingleton().conn.commit();
 			//---------------------------
 			
 			int opcion = JOptionPane.showOptionDialog(this, "Se ha cancelado la operación. Se cerrará la sesión.", "Operación cancelada", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);	
